@@ -5,14 +5,12 @@ body {
   font-family: monospace;
 }
 
-/* APP */
 .app {
   max-width: 420px;
   margin: auto;
   padding: 20px;
 }
 
-/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
@@ -35,9 +33,7 @@ body {
   font-size: 14px;
   letter-spacing: 2px;
   color: #ff3b3b;
-  text-shadow: 
-    2px 2px 0px #000,
-    4px 4px 0px #300;
+  text-shadow: 2px 2px #000;
 }
 
 .connect {
@@ -48,7 +44,6 @@ body {
   color: white;
 }
 
-/* BALANCE */
 .balance {
   text-align: center;
   margin-top: 30px;
@@ -58,11 +53,6 @@ body {
   font-size: 42px;
 }
 
-.balance p {
-  opacity: 0.6;
-}
-
-/* ACTIONS */
 .actions {
   display: flex;
   gap: 10px;
@@ -73,12 +63,11 @@ body {
   flex: 1;
   padding: 12px;
   border-radius: 15px;
-  border: none;
   background: #1a1a2e;
   color: white;
+  border: none;
 }
 
-/* CARD */
 .card {
   background: #1a1a2e;
   padding: 20px;
@@ -101,7 +90,6 @@ button {
   padding: 14px;
   margin-top: 15px;
   border-radius: 15px;
-  border: none;
   background: linear-gradient(45deg, #9945FF, #14F195);
   color: black;
   font-weight: bold;
