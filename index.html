@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Wallet</title>
+  <meta charset="UTF-8">
+  <title>Crypto Wallet</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- FIX CSS -->
   <link rel="stylesheet" href="./style.css">
-
 </head>
 <body>
 
@@ -14,26 +14,25 @@
   <!-- HEADER -->
   <div class="header">
     <div class="avatar"></div>
-    <h3>Wallet 1</h3>
-    <div class="scan"></div>
+    <h3>Wallet</h3>
+    <button class="connect-btn" onclick="connectWallet()">Connect</button>
   </div>
 
   <!-- BALANCE -->
   <div class="balance">
     <h1 id="usd">$0.00</h1>
-    <p class="profit">+$0.00 +0.00%</p>
+    <p class="profit">+$0.00</p>
   </div>
 
-  <!-- BUTTON -->
+  <!-- ACTIONS -->
   <div class="actions">
     <button onclick="connectWallet()">Deposit</button>
     <button onclick="buy()">Buy</button>
     <button onclick="openSend()">Send</button>
   </div>
 
-  <!-- TOKEN LIST -->
+  <!-- TOKENS -->
   <div class="tokens">
-
     <div class="token">
       <div class="left">
         <div class="logo sol"></div>
@@ -44,44 +43,13 @@
       </div>
       <div class="right">
         <h4 id="solUsd">$0.00</h4>
-        <p class="green">+$0</p>
       </div>
     </div>
-
-    <div class="token">
-      <div class="left">
-        <div class="logo eth"></div>
-        <div>
-          <h4>Ethereum</h4>
-          <p>0 ETH</p>
-        </div>
-      </div>
-      <div class="right">
-        <h4>$0.00</h4>
-        <p class="green">+$0</p>
-      </div>
-    </div>
-
-    <div class="token">
-      <div class="left">
-        <div class="logo matic"></div>
-        <div>
-          <h4>Polygon</h4>
-          <p>0 MATIC</p>
-        </div>
-      </div>
-      <div class="right">
-        <h4>$0.00</h4>
-        <p class="green">+$0</p>
-      </div>
-    </div>
-
   </div>
 
-  <!-- NAVBAR -->
+  <!-- NAV -->
   <div class="navbar">
     <span>💰</span>
-    <span>⬛</span>
     <span>🔄</span>
     <span>⚡</span>
     <span>🌐</span>
@@ -93,4 +61,4 @@
 <script src="./app.js"></script>
 
 </body>
-                                                                           </html>
+</html>
