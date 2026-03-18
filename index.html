@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Crypto Wallet</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet</title>
 
-  <link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
@@ -14,45 +14,62 @@
   <!-- HEADER -->
   <div class="header">
     <div class="avatar"></div>
-    <h3>Wallet</h3>
+    <div class="wallet-name">Wallet 1</div>
     <button class="connect-btn" onclick="connectWallet()">Connect</button>
   </div>
 
   <!-- BALANCE -->
   <div class="balance">
     <h1 id="usd">$0.00</h1>
-    <p class="profit">+$0.00</p>
+    <p id="sol">0 SOL</p>
   </div>
 
-  <!-- ACTIONS -->
+  <!-- ACTION BUTTONS -->
   <div class="actions">
-    <button onclick="connectWallet()">Deposit</button>
-    <button onclick="buy()">Buy</button>
     <button onclick="openSend()">Send</button>
+    <button onclick="connectWallet()">Receive</button>
+    <button onclick="buy()">Buy</button>
   </div>
 
-  <!-- TOKENS -->
-  <div class="tokens">
+  <!-- SWAP CARD -->
+  <div class="card">
+    <h3>Swap</h3>
+
+    <div class="input-box">
+      <input id="amount" placeholder="0.0">
+      <span>SOL</span>
+    </div>
+
+    <div class="arrow">↓</div>
+
+    <div class="input-box">
+      <select id="token">
+        <option value="USDC">USDC</option>
+        <option value="BONK">BONK</option>
+      </select>
+    </div>
+
+    <button class="primary" onclick="getQuote()">Get Price</button>
+    <button class="primary" onclick="swap()">Swap</button>
+
+    <p id="quote">-</p>
+  </div>
+
+  <!-- TOKEN LIST -->
+  <div class="card">
+    <h3>Tokens</h3>
+
     <div class="token">
       <div class="left">
         <div class="logo sol"></div>
         <div>
           <h4>Solana</h4>
-          <p id="sol">0 SOL</p>
+          <p id="solBalance">0 SOL</p>
         </div>
       </div>
-      <div class="right">
-        <h4 id="solUsd">$0.00</h4>
-      </div>
+      <div class="right" id="solUsd">$0.00</div>
     </div>
-  </div>
 
-  <!-- NAV -->
-  <div class="navbar">
-    <span>💰</span>
-    <span>🔄</span>
-    <span>⚡</span>
-    <span>🌐</span>
   </div>
 
 </div>
@@ -61,4 +78,4 @@
 <script src="./app.js"></script>
 
 </body>
-</html>
+  </html>
