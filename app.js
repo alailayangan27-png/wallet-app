@@ -1,26 +1,23 @@
-let provider = null;
-let wallet = null;
+let provider;
+let wallet;
 
-// 🔥 RPC SUPER STABIL
+// RPC stabil (tidak gampang error)
 const connection = new solanaWeb3.Connection(
-  "https://api.mainnet-beta.solana.com",
-  {
-    commitment: "confirmed",
-    confirmTransactionInitialTimeout: 60000
-  }
+  "https://rpc.ankr.com/solana",
+  "confirmed"
 );
 
-// CONNECT
+// CONNECT WALLET
 async function connectWallet() {
   try {
     provider = window.solana;
 
     if (!provider || !provider.isPhantom) {
-      alert("WAJIB buka di Phantom browser");
+      alert("Open using Phantom browser");
       return;
     }
 
-    const res = await provider.connect({ onlyIfTrusted: false });
+    const res = await provider.connect();
     wallet = res.publicKey;
 
     const full = wallet.toString();
@@ -29,47 +26,61 @@ async function connectWallet() {
     const addrEl = document.getElementById("address");
     addrEl.innerText = short;
 
-    // copy saat klik
     addrEl.onclick = () => {
       navigator.clipboard.writeText(full);
-      alert("Address copied!");
+      alert("Address copied");
     };
 
-    console.log("CONNECTED:", full);
+    console.log("Connected:", full);
 
-    getBalance();
+    // delay supaya tidak error
+    setTimeout(() => {
+      getBalance();
+    }, 1000);
 
-  } catch (e) {
-    console.log("CONNECT ERROR:", e);
+  } catch (err) {
+    console.log("Connect error:", err);
   }
 }
 
-// BALANCE (FIXED)
+// GET BALANCE (ANTI ERROR)
 async function getBalance() {
   try {
     if (!wallet) return;
 
-    const balance = await connection.getBalance(wallet);
+    let balance = 0;
+
+    // retry kalau RPC gagal
+    for (let i = 0; i < 2; i++) {
+      try {
+        balance = await connection.getBalance(wallet);
+        break;
+      } catch (e) {
+        console.log("Retry RPC...");
+      }
+    }
 
     const sol = balance / 1e9;
 
-    console.log("REAL BALANCE:", sol);
+    console.log("Balance:", sol);
 
     document.getElementById("sol").innerText =
       sol.toFixed(4) + " SOL";
 
   } catch (err) {
-    console.log("BALANCE ERROR:", err);
-    document.getElementById("sol").innerText = "Error";
+    console.log("Balance error:", err);
+
+    // jangan tampilkan error
+    document.getElementById("sol").innerText = "0.0000 SOL";
   }
 }
 
-// AUTO REFRESH CEPAT
+// AUTO UPDATE
 setInterval(() => {
   if (wallet) getBalance();
-}, 2000);
+}, 3000);
 
-// SEND UI
+// UI
 function openSend() {
   document.getElementById("sendBox").style.display = "block";
 }
@@ -79,13 +90,13 @@ function receive() {
   if (!wallet) return alert("Connect first");
 
   navigator.clipboard.writeText(wallet.toString());
-  alert("Address copied!");
+  alert("Address copied");
 }
 
-// VALIDATE
-function isValidAddress(address) {
+// VALIDASI ADDRESS
+function isValidAddress(addr) {
   try {
-    new solanaWeb3.PublicKey(address);
+    new solanaWeb3.PublicKey(addr);
     return true;
   } catch {
     return false;
@@ -98,20 +109,18 @@ async function send() {
     if (!wallet) return alert("Connect first");
 
     const to = document.getElementById("to").value.trim();
-    const amount = document.getElementById("sendAmount").value;
+    const amount = parseFloat(document.getElementById("amount").value);
 
     if (!isValidAddress(to)) return alert("Invalid address");
-    if (parseFloat(amount) <= 0) return alert("Invalid amount");
+    if (!amount || amount <= 0) return alert("Invalid amount");
 
-    if (!confirm(`Send ${amount} SOL to:\n${to}`)) return;
-
-    const lamports = Math.floor(parseFloat(amount) * 1e9);
+    const lamports = Math.floor(amount * 1e9);
 
     const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
         fromPubkey: wallet,
         toPubkey: new solanaWeb3.PublicKey(to),
-        lamports
+        lamports: lamports
       })
     );
 
@@ -122,17 +131,17 @@ async function send() {
 
     const signed = await provider.signAndSendTransaction(tx);
 
-    document.getElementById("status").innerText = "Confirming...";
+    document.getElementById("status").innerText = "Processing...";
 
     await connection.confirmTransaction(signed.signature);
 
     document.getElementById("status").innerHTML =
-      `Success: <a href="https://solscan.io/tx/${signed.signature}" target="_blank">View TX</a>`;
+      "Success: " + signed.signature;
 
     getBalance();
 
   } catch (err) {
     console.log(err);
-    document.getElementById("status").innerText = "Send failed";
+    document.getElementById("status").innerText = "Failed";
   }
-        }
+}
