@@ -1,33 +1,27 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: sans-serif;
   background: #0c0c0f;
   color: white;
 }
 
-/* APP */
 .app {
   max-width: 420px;
   margin: auto;
   padding: 20px;
 }
 
-/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.wallet-name {
-  font-weight: bold;
-}
-
 .avatar {
   width: 32px;
   height: 32px;
-  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
   border-radius: 50%;
+  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
 }
 
 .connect-btn {
@@ -38,25 +32,17 @@ body {
   color: white;
 }
 
-/* BALANCE */
 .balance {
   text-align: center;
   margin: 30px 0;
 }
 
 .balance h1 {
-  font-size: 42px;
-  margin: 0;
+  font-size: 40px;
 }
 
-.balance p {
-  color: #888;
-}
-
-/* ACTIONS */
 .actions {
   display: flex;
-  justify-content: space-between;
 }
 
 .actions button {
@@ -69,7 +55,6 @@ body {
   color: white;
 }
 
-/* CARD */
 .card {
   background: #16161c;
   border-radius: 20px;
@@ -77,7 +62,6 @@ body {
   margin-top: 15px;
 }
 
-/* INPUT */
 .input-box {
   display: flex;
   justify-content: space-between;
@@ -94,7 +78,6 @@ body {
   width: 100%;
 }
 
-/* BUTTON */
 .primary {
   width: 100%;
   margin-top: 10px;
@@ -103,14 +86,11 @@ body {
   border: none;
   background: linear-gradient(45deg, #6c5ce7, #8e44ad);
   color: white;
-  font-weight: bold;
 }
 
-/* TOKEN */
 .token {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
 }
 
 .left {
@@ -128,9 +108,7 @@ body {
   background: linear-gradient(45deg, #00ffa3, #dc1fff);
 }
 
-/* ARROW */
 .arrow {
   text-align: center;
   margin: 10px;
-  color: #888;
 }
