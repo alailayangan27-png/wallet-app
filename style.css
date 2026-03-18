@@ -2,9 +2,10 @@ body {
   margin: 0;
   background: #0d0d12;
   color: white;
-  font-family: -apple-system, sans-serif;
+  font-family: monospace;
 }
 
+/* APP */
 .app {
   max-width: 420px;
   margin: auto;
@@ -18,9 +19,25 @@ body {
   align-items: center;
 }
 
-.logo {
-  font-size: 24px;
-  color: #9945FF;
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-img {
+  width: 40px;
+  height: 40px;
+  image-rendering: pixelated;
+}
+
+.title {
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: #ff3b3b;
+  text-shadow: 
+    2px 2px 0px #000,
+    4px 4px 0px #300;
 }
 
 .connect {
@@ -33,25 +50,40 @@ body {
 
 /* BALANCE */
 .balance {
-  margin-top: 30px;
   text-align: center;
+  margin-top: 30px;
 }
 
 .balance h1 {
-  font-size: 40px;
+  font-size: 42px;
 }
 
 .balance p {
   opacity: 0.6;
-  font-size: 14px;
 }
 
-/* SWAP */
-.swap-box {
+/* ACTIONS */
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.actions button {
+  flex: 1;
+  padding: 12px;
+  border-radius: 15px;
+  border: none;
+  background: #1a1a2e;
+  color: white;
+}
+
+/* CARD */
+.card {
   background: #1a1a2e;
   padding: 20px;
   border-radius: 20px;
-  margin-top: 30px;
+  margin-top: 20px;
 }
 
 input, select {
@@ -78,5 +110,4 @@ button {
 #status {
   text-align: center;
   margin-top: 15px;
-  opacity: 0.7;
 }
