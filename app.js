@@ -4,7 +4,7 @@ let quoteData = null;
 
 const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
 
-// ✅ DETECT PHANTOM (FIX)
+// DETECT WALLET
 function getProvider() {
   if ("solana" in window) {
     const p = window.solana;
@@ -13,30 +13,28 @@ function getProvider() {
   return null;
 }
 
-// ✅ CONNECT WALLET (FIX TOTAL)
+// CONNECT
 async function connectWallet() {
   try {
     provider = getProvider();
 
     if (!provider) {
-      alert("Phantom not found! Install it first.");
+      alert("Install Phantom Wallet");
       return;
     }
 
     const res = await provider.connect();
     wallet = res.publicKey;
 
-    alert("Connected: " + wallet.toString());
-
+    alert("Connected");
     getBalance();
 
   } catch (err) {
-    console.log(err);
-    alert("Connection failed");
+    alert("Connect error");
   }
 }
 
-// ✅ GET BALANCE (SAFE)
+// BALANCE
 async function getBalance() {
   try {
     const balance = await connection.getBalance(wallet);
@@ -58,50 +56,47 @@ async function getBalance() {
   }
 }
 
-// ✅ SEND SOL (FIX)
+// SEND
 async function openSend() {
+  if (!wallet) return alert("Connect first");
+
+  const to = prompt("Address:");
+  const amount = prompt("SOL:");
+
+  if (!to || !amount) return;
+
   try {
-    if (!wallet) {
-      alert("Connect wallet first");
-      return;
-    }
-
-    const to = prompt("Recipient address:");
-    const amount = prompt("Amount (SOL):");
-
-    if (!to || !amount) return;
-
     const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
         fromPubkey: wallet,
         toPubkey: new solanaWeb3.PublicKey(to),
-        lamports: Math.floor(parseFloat(amount) * 1e9)
+        lamports: Math.floor(amount * 1e9)
       })
     );
 
     tx.feePayer = wallet;
-
     const { blockhash } = await connection.getLatestBlockhash();
     tx.recentBlockhash = blockhash;
 
     const signed = await provider.signAndSendTransaction(tx);
 
-    alert("TX Success: " + signed.signature);
+    alert("Sent!");
 
-  } catch (err) {
-    console.log(err);
-    alert("Send failed");
+  } catch {
+    alert("Send error");
   }
 }
 
-// ✅ GET QUOTE (FIX JUPITER API)
+// GET PRICE (FIX TOTAL)
 async function getQuote() {
   try {
+    document.getElementById("quote").innerText = "Loading...";
+
     const amount = document.getElementById("amount").value;
     const token = document.getElementById("token").value;
 
-    if (!amount) {
-      alert("Enter amount");
+    if (!amount || isNaN(amount)) {
+      alert("Enter valid amount");
       return;
     }
 
@@ -111,45 +106,38 @@ async function getQuote() {
       ? "Es9vMFrzaCERsNfZLxE3v8R1qZ8c7Y3Yw5wz2nZ1t4y"
       : "DezXAZ8z7PnrnRJjz3xP9mH7w3Cz7YX8hGZ1x1h9s9d";
 
-    const url = `https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${outputMint}&amount=${lamports}`;
+    const url = `https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${outputMint}&amount=${lamports}&slippageBps=50`;
 
     const res = await fetch(url);
     const data = await res.json();
 
     if (!data.data || data.data.length === 0) {
-      alert("No route found");
+      document.getElementById("quote").innerText = "No route found";
       return;
     }
 
     quoteData = data.data[0];
 
+    const out = quoteData.outAmount / 1e6;
+
     document.getElementById("quote").innerText =
-      "Est: " + (quoteData.outAmount / 1e6).toFixed(4);
+      "≈ " + out.toFixed(4) + " " + token;
 
   } catch (err) {
     console.log(err);
-    alert("Quote error");
+    document.getElementById("quote").innerText = "Error";
   }
 }
 
-// ✅ SWAP (FIX VERSIONED TX)
+// SWAP
 async function swap() {
   try {
-    if (!wallet) {
-      alert("Connect wallet first");
-      return;
-    }
-
-    if (!quoteData) {
-      alert("Get price first");
-      return;
-    }
+    if (!wallet) return alert("Connect first");
+    if (!quoteData) return alert("Get price first");
 
     const res = await fetch("https://quote-api.jup.ag/v6/swap", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         quoteResponse: quoteData,
         userPublicKey: wallet.toString(),
@@ -159,26 +147,21 @@ async function swap() {
 
     const data = await res.json();
 
-    if (!data.swapTransaction) {
-      alert("Swap failed (no tx)");
-      return;
-    }
-
     const tx = solanaWeb3.VersionedTransaction.deserialize(
       new Uint8Array(data.swapTransaction)
     );
 
     const signed = await provider.signAndSendTransaction(tx);
 
-    alert("Swap Success: " + signed.signature);
+    alert("Swap success");
 
   } catch (err) {
     console.log(err);
-    alert("Swap failed");
+    alert("Swap error");
   }
 }
 
-// ✅ BUY BUTTON (SAFE)
+// BUY
 function buy() {
-  window.open("https://moonpay.com", "_blank");
-      }
+  window.open("https://moonpay.com");
+}
