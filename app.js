@@ -6,14 +6,19 @@ let wallet;
 // =======================
 async function connectWallet() {
   try {
-    provider = window.solana;
-
-    if (!provider || !provider.isPhantom) {
+    if (!window.solana) {
       alert("Open inside Phantom browser");
       return;
     }
 
-    const res = await provider.connect();
+    provider = window.solana;
+
+    if (!provider.isPhantom) {
+      alert("Phantom not detected");
+      return;
+    }
+
+    const res = await provider.connect({ onlyIfTrusted: false });
     wallet = res.publicKey;
 
     const full = wallet.toString();
@@ -22,7 +27,6 @@ async function connectWallet() {
     const addr = document.getElementById("address");
     addr.innerText = short;
 
-    // copy address
     addr.onclick = () => {
       navigator.clipboard.writeText(full);
       alert("Address copied!");
@@ -30,13 +34,33 @@ async function connectWallet() {
 
     console.log("CONNECTED:", full);
 
-    // 🔥 ambil balance
-    getBalance();
+    setTimeout(() => {
+      getBalance();
+    }, 800);
 
   } catch (err) {
     console.log("CONNECT ERROR:", err);
+    alert("Connection failed");
   }
 }
+
+// AUTO CONNECT
+window.addEventListener("load", async () => {
+  if (window.solana && window.solana.isPhantom) {
+    try {
+      const res = await window.solana.connect({ onlyIfTrusted: true });
+
+      wallet = res.publicKey;
+
+      const full = wallet.toString();
+      const short = full.slice(0, 4) + "..." + full.slice(-4);
+
+      document.getElementById("address").innerText = short;
+
+      getBalance();
+    } catch {}
+  }
+});
 
 // =======================
 // GET BALANCE (SOLSCAN)
@@ -60,8 +84,6 @@ async function getBalance() {
 
     const sol = data.lamports / 1e9;
 
-    console.log("BALANCE:", sol);
-
     document.getElementById("sol").innerText =
       sol.toFixed(4) + " SOL";
 
@@ -71,19 +93,19 @@ async function getBalance() {
   }
 }
 
-// 🔄 AUTO REFRESH BALANCE
+// AUTO REFRESH
 setInterval(() => {
   if (wallet) getBalance();
 }, 5000);
 
 // =======================
-// UI CONTROL
+// UI
 // =======================
 function openSend() {
   document.getElementById("sendBox").classList.toggle("hidden");
 }
 
-// RECEIVE (COPY ADDRESS)
+// RECEIVE
 function receive() {
   if (!wallet) return alert("Connect first");
 
@@ -125,4 +147,30 @@ async function send() {
 
     const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
-        fromPubkey: wallet
+        fromPubkey: wallet,
+        toPubkey: new solanaWeb3.PublicKey(to),
+        lamports
+      })
+    );
+
+    tx.feePayer = wallet;
+
+    const { blockhash } = await connection.getLatestBlockhash();
+    tx.recentBlockhash = blockhash;
+
+    const signed = await provider.signAndSendTransaction(tx);
+
+    document.getElementById("status").innerText = "Processing...";
+
+    await connection.confirmTransaction(signed.signature);
+
+    document.getElementById("status").innerText =
+      "Success: " + signed.signature;
+
+    getBalance();
+
+  } catch (err) {
+    console.log("SEND ERROR:", err);
+    document.getElementById("status").innerText = "Failed";
+  }
+}
