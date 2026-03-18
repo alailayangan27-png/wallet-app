@@ -9,7 +9,6 @@
 
 <div class="app">
 
-  <!-- HEADER -->
   <div class="header">
     <div class="brand">
       <img src="logo.png" class="logo-img">
@@ -19,26 +18,22 @@
     <button class="connect" onclick="connectWallet()">Connect</button>
   </div>
 
-  <!-- BALANCE -->
   <div class="balance">
     <h1 id="sol">0 SOL</h1>
     <p id="address">Not connected</p>
   </div>
 
-  <!-- ACTION -->
   <div class="actions">
     <button onclick="openSend()">Send</button>
     <button onclick="receive()">Receive</button>
   </div>
 
-  <!-- SEND BOX -->
   <div class="card" id="sendBox" style="display:none;">
     <input id="to" placeholder="Recipient address">
     <input id="sendAmount" placeholder="Amount SOL">
     <button onclick="send()">Confirm Send</button>
   </div>
 
-  <!-- SWAP -->
   <div class="card">
     <input id="amount" placeholder="0.0 SOL">
 
