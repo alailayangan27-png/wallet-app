@@ -87,3 +87,11 @@ function receive() {
 
   alert("Address copied!");
 }
+function loadTwitterFeed() {
+  if (window.twttr && window.twttr.widgets) {
+    window.twttr.widgets.load();
+  }
+}
+
+// reload setelah halaman siap
+setTimeout(loadTwitterFeed, 2000);
