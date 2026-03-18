@@ -1,78 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Wallet</title>
-
-<link rel="stylesheet" href="./style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="app">
 
+  <!-- HEADER -->
   <div class="header">
-    <div class="avatar"></div>
-    <div class="wallet-name">Wallet</div>
-    <button class="connect-btn" onclick="connectWallet()">Connect</button>
+    <div class="logo">◎</div>
+    <button class="connect" onclick="connectWallet()">Connect</button>
   </div>
 
+  <!-- BALANCE -->
   <div class="balance">
-    <h1 id="usd">$0.00</h1>
-    <p id="sol">0 SOL</p>
-  </div>
-
-  <div class="actions">
-    <button onclick="openSend()">Send</button>
-    <button onclick="connectWallet()">Receive</button>
-    <button onclick="buy()">Buy</button>
+    <h1 id="sol">0 SOL</h1>
+    <p id="address">Not connected</p>
   </div>
 
   <!-- SWAP -->
-  <div class="card">
-    <h3>Swap</h3>
+  <div class="swap-box">
+    <input id="amount" placeholder="0.0">
 
-    <div class="input-box">
-      <input id="amount" placeholder="0.0">
-      <span>SOL</span>
-    </div>
+    <select id="token">
+      <option>USDC</option>
+      <option>BONK</option>
+      <option>JUP</option>
+    </select>
 
-    <div class="arrow">↓</div>
-
-    <div class="input-box">
-      <select id="token">
-        <option value="USDC">USDC</option>
-        <option value="BONK">BONK</option>
-      </select>
-    </div>
-
-    <button class="primary" onclick="getQuote()">Get Price</button>
-    <button class="primary" onclick="swap()">Swap</button>
-
-    <p id="quote">-</p>
+    <button onclick="swap()">Swap</button>
   </div>
 
-  <!-- TOKEN -->
-  <div class="card">
-    <h3>Assets</h3>
-
-    <div class="token">
-      <div class="left">
-        <div class="logo sol"></div>
-        <div>
-          <h4>Solana</h4>
-          <p id="solBalance">0 SOL</p>
-        </div>
-      </div>
-      <div class="right" id="solUsd">$0.00</div>
-    </div>
-
-  </div>
+  <p id="status"></p>
 
 </div>
 
 <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
-<script src="./app.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
