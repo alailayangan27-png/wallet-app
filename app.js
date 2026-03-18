@@ -1,9 +1,9 @@
 let provider = null;
 let wallet = null;
 
-// 🔥 STABLE RPC
 const connection = new solanaWeb3.Connection(
-  "https://rpc.ankr.com/solana"
+  "https://api.mainnet-beta.solana.com",
+  "confirmed"
 );
 
 // CONNECT
@@ -18,29 +18,46 @@ async function connectWallet() {
   const res = await provider.connect();
   wallet = res.publicKey;
 
-  document.getElementById("address").innerText =
-    wallet.toString();
+  // SHORT ADDRESS
+  const full = wallet.toString();
+  const short = full.slice(0, 4) + "..." + full.slice(-4);
 
-  console.log("Connected wallet:", wallet.toString());
+  const addrEl = document.getElementById("address");
+  addrEl.innerText = short;
+
+  // COPY ON CLICK
+  addrEl.onclick = () => {
+    navigator.clipboard.writeText(full);
+    alert("Address copied!");
+  };
 
   getBalance();
 }
 
-// REALTIME BALANCE
+// BALANCE (FIXED)
 async function getBalance() {
   try {
-    const balance = await connection.getBalance(wallet);
+    if (!wallet) return;
+
+    const balance = await connection.getBalance(wallet, {
+      commitment: "confirmed"
+    });
+
+    const sol = balance / 1e9;
+
     document.getElementById("sol").innerText =
-      (balance / 1e9).toFixed(4) + " SOL";
-  } catch (e) {
-    console.log(e);
+      sol.toFixed(4) + " SOL";
+
+  } catch (err) {
+    console.log(err);
+    document.getElementById("sol").innerText = "0 SOL";
   }
 }
 
 // AUTO REFRESH
 setInterval(() => {
   if (wallet) getBalance();
-}, 5000);
+}, 3000);
 
 // SEND UI
 function openSend() {
@@ -55,7 +72,7 @@ function receive() {
   alert("Address copied!");
 }
 
-// VALIDATE ADDRESS
+// VALIDATE
 function isValidAddress(address) {
   try {
     new solanaWeb3.PublicKey(address);
@@ -65,7 +82,7 @@ function isValidAddress(address) {
   }
 }
 
-// SEND SOL (CONFIRMED)
+// SEND
 async function send() {
   try {
     if (!wallet) return alert("Connect first");
@@ -117,7 +134,7 @@ function getTokenMint(token) {
   if (token === "JUP") return "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
 }
 
-// SWAP (CONFIRMED)
+// SWAP
 async function swap() {
   try {
     if (!wallet) return alert("Connect first");
