@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  background: #0f0f1a;
-  color: white;
   font-family: Arial;
+  background: #0c0c0f;
+  color: white;
 }
 
 .app {
@@ -11,83 +11,67 @@ body {
   padding: 20px;
 }
 
-.topbar {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.logo {
+.title {
   font-weight: bold;
   font-size: 18px;
 }
 
-.connect-btn {
-  background: #6c5ce7;
+.btn {
+  background: purple;
   border: none;
-  padding: 10px 14px;
-  border-radius: 12px;
+  padding: 8px 12px;
   color: white;
+  border-radius: 8px;
 }
 
 .card {
-  background: #1b1b2f;
-  padding: 20px;
-  border-radius: 20px;
-  margin-top: 20px;
-}
-
-.balance-card {
-  text-align: center;
-}
-
-.balance {
-  font-size: 32px;
-  margin-top: 10px;
+  background: #1a1a1f;
+  padding: 15px;
+  margin-top: 15px;
+  border-radius: 16px;
 }
 
 .label {
-  opacity: 0.6;
+  color: gray;
+  font-size: 12px;
 }
 
-.address {
-  margin-top: 10px;
-  opacity: 0.7;
-  font-size: 12px;
+#sol {
+  font-size: 24px;
+  margin-top: 5px;
 }
 
 .actions {
   display: flex;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .actions button {
   flex: 1;
-  padding: 14px;
-  border-radius: 14px;
+  padding: 10px;
   border: none;
-  background: #2d2d44;
+  border-radius: 12px;
+  background: #6c2bd9;
   color: white;
-}
-
-.hidden {
-  display: none;
 }
 
 input {
   width: 100%;
-  padding: 12px;
   margin-top: 10px;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: 10px;
   border: none;
-  background: #2d2d44;
+  background: #2a2a2f;
   color: white;
 }
 
-#status {
-  margin-top: 15px;
-  text-align: center;
-  font-size: 12px;
-  opacity: 0.7;
+.twitter-timeline {
+  border-radius: 16px !important;
 }
