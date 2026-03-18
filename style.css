@@ -33,7 +33,6 @@ body {
   font-size: 14px;
   letter-spacing: 2px;
   color: #ff3b3b;
-  text-shadow: 2px 2px #000;
 }
 
 .connect {
@@ -75,7 +74,7 @@ body {
   margin-top: 20px;
 }
 
-input, select {
+input {
   width: 100%;
   padding: 14px;
   margin-top: 10px;
@@ -93,9 +92,4 @@ button {
   background: linear-gradient(45deg, #9945FF, #14F195);
   color: black;
   font-weight: bold;
-}
-
-#status {
-  text-align: center;
-  margin-top: 15px;
 }
