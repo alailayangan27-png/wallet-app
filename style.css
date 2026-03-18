@@ -26,11 +26,14 @@ body {
   border-radius: 50%;
 }
 
-.scan {
-  width: 30px;
-  height: 30px;
-  border: 2px solid white;
-  border-radius: 8px;
+/* CONNECT */
+.connect-btn {
+  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
 }
 
 /* BALANCE */
@@ -40,7 +43,7 @@ body {
 }
 
 .balance h1 {
-  font-size: 48px;
+  font-size: 40px;
   margin: 0;
 }
 
@@ -48,7 +51,7 @@ body {
   color: #00ff88;
 }
 
-/* BUTTON */
+/* ACTIONS */
 .actions {
   display: flex;
   justify-content: space-between;
@@ -86,11 +89,9 @@ body {
   border-radius: 50%;
 }
 
-.sol { background: linear-gradient(45deg, #00ffa3, #dc1fff); }
-.eth { background: gray; }
-.matic { background: purple; }
-
-.green { color: #00ff88; }
+.sol {
+  background: linear-gradient(45deg, #00ffa3, #dc1fff);
+}
 
 /* NAVBAR */
 .navbar {
