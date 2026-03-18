@@ -1,42 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lobstar Wallet</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lobstar Wallet</title>
+
+  <link rel="stylesheet" href="style.css"/>
+
+  <!-- Solana -->
+  <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
 </head>
+
 <body>
 
 <div class="app">
 
-  <div class="topbar">
-    <div class="logo">LOBSTAR WALLET</div>
-    <button class="connect-btn" onclick="connectWallet()">Connect</button>
+  <!-- HEADER -->
+  <div class="header">
+    <div class="title">🦞 LOBSTAR WALLET</div>
+    <button onclick="connectWallet()" class="btn">Connect</button>
   </div>
 
-  <div class="card balance-card">
-    <div class="label">Balance</div>
-    <div id="sol" class="balance">Loading...</div>
-    <div id="address" class="address">Not connected</div>
+  <!-- WALLET CARD -->
+  <div class="card">
+    <div class="label">Wallet</div>
+    <div id="address">Not connected</div>
+    <div id="sol">Loading...</div>
   </div>
 
+  <!-- ACTIONS -->
   <div class="actions">
-    <button onclick="openSend()">Send</button>
+    <button onclick="sendSOL()">Send</button>
     <button onclick="receive()">Receive</button>
   </div>
 
-  <div id="sendBox" class="card hidden">
-    <input id="to" placeholder="Recipient address">
-    <input id="amount" placeholder="Amount (SOL)">
-    <button onclick="send()">Send Now</button>
+  <!-- SEND FORM -->
+  <div class="card">
+    <input id="to" placeholder="Recipient Address"/>
+    <input id="amount" placeholder="Amount (SOL)"/>
+    <button onclick="sendSOL()">Confirm Send</button>
   </div>
 
-  <div id="status"></div>
+  <!-- TWITTER FEED -->
+  <div class="card">
+    <div class="label">Lobstar Updates</div>
+
+    <a class="twitter-timeline"
+       data-theme="dark"
+       data-height="400"
+       href="https://twitter.com/USERNAME_KAMU">
+       Tweets by Lobstar
+    </a>
+  </div>
 
 </div>
 
-<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+<script async src="https://platform.twitter.com/widgets.js"></script>
 <script src="app.js"></script>
 
 </body>
-    </html>
+</html>
