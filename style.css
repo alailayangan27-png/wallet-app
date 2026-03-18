@@ -84,3 +84,10 @@ input {
   background: #2d2d44;
   color: white;
 }
+
+#status {
+  margin-top: 15px;
+  text-align: center;
+  font-size: 12px;
+  opacity: 0.7;
+}
