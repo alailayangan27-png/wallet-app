@@ -1,19 +1,19 @@
 let provider;
 let wallet;
 
-// RPC stabil (tidak gampang error)
+// 🔥 RPC RESMI (LEBIH STABIL)
 const connection = new solanaWeb3.Connection(
-  "https://rpc.ankr.com/solana",
+  "https://api.mainnet-beta.solana.com",
   "confirmed"
 );
 
-// CONNECT WALLET
+// CONNECT
 async function connectWallet() {
   try {
     provider = window.solana;
 
     if (!provider || !provider.isPhantom) {
-      alert("Open using Phantom browser");
+      alert("Open inside Phantom browser");
       return;
     }
 
@@ -23,64 +23,59 @@ async function connectWallet() {
     const full = wallet.toString();
     const short = full.slice(0, 4) + "..." + full.slice(-4);
 
-    const addrEl = document.getElementById("address");
-    addrEl.innerText = short;
+    const addr = document.getElementById("address");
+    addr.innerText = short;
 
-    addrEl.onclick = () => {
+    addr.onclick = () => {
       navigator.clipboard.writeText(full);
-      alert("Address copied");
+      alert("Copied!");
     };
 
-    console.log("Connected:", full);
+    console.log("CONNECTED:", full);
 
-    // delay supaya tidak error
-    setTimeout(() => {
-      getBalance();
-    }, 1000);
+    // 🔥 langsung ambil balance
+    await getBalance();
 
   } catch (err) {
-    console.log("Connect error:", err);
+    console.log("CONNECT ERROR:", err);
   }
 }
 
-// GET BALANCE (ANTI ERROR)
+// 🔥 BALANCE (PALING AKURAT)
 async function getBalance() {
   try {
     if (!wallet) return;
 
-    let balance = 0;
+    const info = await connection.getAccountInfo(wallet);
 
-    // retry kalau RPC gagal
-    for (let i = 0; i < 2; i++) {
-      try {
-        balance = await connection.getBalance(wallet);
-        break;
-      } catch (e) {
-        console.log("Retry RPC...");
-      }
+    if (!info) {
+      console.log("Account kosong / belum ada");
+      document.getElementById("sol").innerText = "0.0000 SOL";
+      return;
     }
 
-    const sol = balance / 1e9;
+    const lamports = info.lamports;
+    const sol = lamports / 1e9;
 
-    console.log("Balance:", sol);
+    console.log("LAMPORTS:", lamports);
+    console.log("SOL:", sol);
 
     document.getElementById("sol").innerText =
       sol.toFixed(4) + " SOL";
 
   } catch (err) {
-    console.log("Balance error:", err);
+    console.log("BALANCE ERROR:", err);
 
-    // jangan tampilkan error
     document.getElementById("sol").innerText = "0.0000 SOL";
   }
 }
 
-// AUTO UPDATE
+// 🔥 AUTO UPDATE (REALTIME RASA PHANTOM)
 setInterval(() => {
   if (wallet) getBalance();
-}, 3000);
+}, 2500);
 
-// UI
+// SEND UI
 function openSend() {
   document.getElementById("sendBox").style.display = "block";
 }
@@ -90,7 +85,7 @@ function receive() {
   if (!wallet) return alert("Connect first");
 
   navigator.clipboard.writeText(wallet.toString());
-  alert("Address copied");
+  alert("Address copied!");
 }
 
 // VALIDASI ADDRESS
@@ -120,7 +115,7 @@ async function send() {
       solanaWeb3.SystemProgram.transfer({
         fromPubkey: wallet,
         toPubkey: new solanaWeb3.PublicKey(to),
-        lamports: lamports
+        lamports
       })
     );
 
@@ -135,13 +130,13 @@ async function send() {
 
     await connection.confirmTransaction(signed.signature);
 
-    document.getElementById("status").innerHTML =
+    document.getElementById("status").innerText =
       "Success: " + signed.signature;
 
     getBalance();
 
   } catch (err) {
-    console.log(err);
+    console.log("SEND ERROR:", err);
     document.getElementById("status").innerText = "Failed";
   }
-}
+      }
