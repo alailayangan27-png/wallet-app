@@ -1,13 +1,13 @@
 body {
   margin: 0;
-  font-family: Arial;
-  background: linear-gradient(180deg, #0f2027, #203a43);
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  background: #0c0c0f;
   color: white;
 }
 
 /* APP */
 .app {
-  max-width: 400px;
+  max-width: 420px;
   margin: auto;
   padding: 20px;
 }
@@ -19,21 +19,23 @@ body {
   align-items: center;
 }
 
+.wallet-name {
+  font-weight: bold;
+}
+
 .avatar {
-  width: 35px;
-  height: 35px;
-  background: purple;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
   border-radius: 50%;
 }
 
-/* CONNECT */
 .connect-btn {
-  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+  background: #1f1f25;
   border: none;
   padding: 8px 14px;
-  border-radius: 15px;
+  border-radius: 12px;
   color: white;
-  font-weight: bold;
 }
 
 /* BALANCE */
@@ -43,12 +45,12 @@ body {
 }
 
 .balance h1 {
-  font-size: 40px;
+  font-size: 42px;
   margin: 0;
 }
 
-.profit {
-  color: #00ff88;
+.balance p {
+  color: #888;
 }
 
 /* ACTIONS */
@@ -61,21 +63,54 @@ body {
   flex: 1;
   margin: 5px;
   padding: 14px;
-  border-radius: 25px;
+  border-radius: 20px;
+  border: none;
+  background: #1f1f25;
+  color: white;
+}
+
+/* CARD */
+.card {
+  background: #16161c;
+  border-radius: 20px;
+  padding: 15px;
+  margin-top: 15px;
+}
+
+/* INPUT */
+.input-box {
+  display: flex;
+  justify-content: space-between;
+  background: #1f1f25;
+  padding: 12px;
+  border-radius: 12px;
+  margin-top: 10px;
+}
+
+.input-box input, select {
+  background: none;
+  border: none;
+  color: white;
+  width: 100%;
+}
+
+/* BUTTON */
+.primary {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 20px;
   border: none;
   background: linear-gradient(45deg, #6c5ce7, #8e44ad);
   color: white;
   font-weight: bold;
 }
 
-/* TOKENS */
+/* TOKEN */
 .token {
-  background: #1a1a2e;
-  padding: 15px;
-  border-radius: 15px;
-  margin-top: 10px;
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 .left {
@@ -93,13 +128,9 @@ body {
   background: linear-gradient(45deg, #00ffa3, #dc1fff);
 }
 
-/* NAVBAR */
-.navbar {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #111;
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0;
+/* ARROW */
+.arrow {
+  text-align: center;
+  margin: 10px;
+  color: #888;
 }
