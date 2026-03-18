@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wallet</title>
+
+  <!-- FIX CSS -->
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="avatar"></div>
+    <h3>Wallet 1</h3>
+    <div class="scan"></div>
+  </div>
+
+  <!-- BALANCE -->
+  <div class="balance">
+    <h1 id="usd">$0.00</h1>
+    <p class="profit">+$0.00 +0.00%</p>
+  </div>
+
+  <!-- BUTTON -->
+  <div class="actions">
+    <button onclick="connectWallet()">Deposit</button>
+    <button onclick="buy()">Buy</button>
+    <button onclick="openSend()">Send</button>
+  </div>
+
+  <!-- TOKEN LIST -->
+  <div class="tokens">
+
+    <div class="token">
+      <div class="left">
+        <div class="logo sol"></div>
+        <div>
+          <h4>Solana</h4>
+          <p id="sol">0 SOL</p>
+        </div>
+      </div>
+      <div class="right">
+        <h4 id="solUsd">$0.00</h4>
+        <p class="green">+$0</p>
+      </div>
+    </div>
+
+    <div class="token">
+      <div class="left">
+        <div class="logo eth"></div>
+        <div>
+          <h4>Ethereum</h4>
+          <p>0 ETH</p>
+        </div>
+      </div>
+      <div class="right">
+        <h4>$0.00</h4>
+        <p class="green">+$0</p>
+      </div>
+    </div>
+
+    <div class="token">
+      <div class="left">
+        <div class="logo matic"></div>
+        <div>
+          <h4>Polygon</h4>
+          <p>0 MATIC</p>
+        </div>
+      </div>
+      <div class="right">
+        <h4>$0.00</h4>
+        <p class="green">+$0</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <span>💰</span>
+    <span>⬛</span>
+    <span>🔄</span>
+    <span>⚡</span>
+    <span>🌐</span>
+  </div>
+
+</div>
+
+<script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+<script src="./app.js"></script>
+
+</body>
+                                                                           </html>
