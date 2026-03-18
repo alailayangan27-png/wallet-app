@@ -1,8 +1,9 @@
 let provider = null;
 let wallet = null;
 
+// 🔥 STABLE RPC
 const connection = new solanaWeb3.Connection(
-  "https://api.mainnet-beta.solana.com"
+  "https://rpc.ankr.com/solana"
 );
 
 // CONNECT
@@ -18,19 +19,30 @@ async function connectWallet() {
   wallet = res.publicKey;
 
   document.getElementById("address").innerText =
-    wallet.toString().slice(0, 6) + "...";
+    wallet.toString();
+
+  console.log("Connected wallet:", wallet.toString());
 
   getBalance();
 }
 
-// BALANCE
+// REALTIME BALANCE
 async function getBalance() {
-  const balance = await connection.getBalance(wallet);
-  document.getElementById("sol").innerText =
-    (balance / 1e9).toFixed(4) + " SOL";
+  try {
+    const balance = await connection.getBalance(wallet);
+    document.getElementById("sol").innerText =
+      (balance / 1e9).toFixed(4) + " SOL";
+  } catch (e) {
+    console.log(e);
+  }
 }
 
-// OPEN SEND
+// AUTO REFRESH
+setInterval(() => {
+  if (wallet) getBalance();
+}, 5000);
+
+// SEND UI
 function openSend() {
   document.getElementById("sendBox").style.display = "block";
 }
@@ -43,33 +55,57 @@ function receive() {
   alert("Address copied!");
 }
 
-// SEND SOL
+// VALIDATE ADDRESS
+function isValidAddress(address) {
+  try {
+    new solanaWeb3.PublicKey(address);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// SEND SOL (CONFIRMED)
 async function send() {
   try {
-    const to = document.getElementById("to").value;
+    if (!wallet) return alert("Connect first");
+
+    const to = document.getElementById("to").value.trim();
     const amount = document.getElementById("sendAmount").value;
 
-    if (!to || !amount) return alert("Fill all fields");
+    if (!isValidAddress(to)) return alert("Invalid address");
+    if (parseFloat(amount) <= 0) return alert("Invalid amount");
 
-    const transaction = new solanaWeb3.Transaction().add(
+    if (!confirm(`Send ${amount} SOL to:\n${to}`)) return;
+
+    const lamports = Math.floor(parseFloat(amount) * 1e9);
+
+    const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
         fromPubkey: wallet,
         toPubkey: new solanaWeb3.PublicKey(to),
-        lamports: parseFloat(amount) * 1e9
+        lamports
       })
     );
 
-    transaction.feePayer = wallet;
-    transaction.recentBlockhash = (
-      await connection.getLatestBlockhash()
-    ).blockhash;
+    tx.feePayer = wallet;
 
-    const signed = await provider.signAndSendTransaction(transaction);
+    const { blockhash } = await connection.getLatestBlockhash();
+    tx.recentBlockhash = blockhash;
 
-    document.getElementById("status").innerText =
-      "Sent: " + signed.signature;
+    const signed = await provider.signAndSendTransaction(tx);
+
+    document.getElementById("status").innerText = "Confirming...";
+
+    await connection.confirmTransaction(signed.signature);
+
+    document.getElementById("status").innerHTML =
+      `Success: <a href="https://solscan.io/tx/${signed.signature}" target="_blank">View TX</a>`;
+
+    getBalance();
 
   } catch (err) {
+    console.log(err);
     document.getElementById("status").innerText = "Send failed";
   }
 }
@@ -81,7 +117,7 @@ function getTokenMint(token) {
   if (token === "JUP") return "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN";
 }
 
-// SWAP
+// SWAP (CONFIRMED)
 async function swap() {
   try {
     if (!wallet) return alert("Connect first");
@@ -89,7 +125,11 @@ async function swap() {
     const amount = document.getElementById("amount").value;
     const token = document.getElementById("token").value;
 
-    const lamports = parseFloat(amount) * 1e9;
+    if (!amount || isNaN(amount)) return alert("Invalid amount");
+
+    document.getElementById("status").innerText = "Processing...";
+
+    const lamports = Math.floor(parseFloat(amount) * 1e9);
 
     const quoteRes = await fetch(
       `https://quote-api.jup.ag/v6/quote?inputMint=So11111111111111111111111111111111111111112&outputMint=${getTokenMint(token)}&amount=${lamports}`
@@ -103,7 +143,8 @@ async function swap() {
       headers: {"Content-Type":"application/json"},
       body: JSON.stringify({
         quoteResponse: route,
-        userPublicKey: wallet.toString()
+        userPublicKey: wallet.toString(),
+        wrapAndUnwrapSol: true
       })
     });
 
@@ -115,10 +156,15 @@ async function swap() {
 
     const signed = await provider.signAndSendTransaction(tx);
 
-    document.getElementById("status").innerText =
-      "Swap: " + signed.signature;
+    await connection.confirmTransaction(signed.signature);
+
+    document.getElementById("status").innerHTML =
+      `Swap Success: <a href="https://solscan.io/tx/${signed.signature}" target="_blank">View</a>`;
+
+    getBalance();
 
   } catch (err) {
+    console.log(err);
     document.getElementById("status").innerText = "Swap failed";
   }
-    }
+}
