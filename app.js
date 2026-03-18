@@ -1,25 +1,15 @@
 let provider;
 let wallet;
 
-// 🔥 MULTI RPC (ANTI GAGAL)
-const RPCS = [
-  "https://api.mainnet-beta.solana.com",
-  "https://rpc.ankr.com/solana",
-  "https://solana.public-rpc.com"
-];
-
-function getConnection() {
-  const url = RPCS[Math.floor(Math.random() * RPCS.length)];
-  return new solanaWeb3.Connection(url, "confirmed");
-}
-
-// CONNECT
+// =======================
+// CONNECT WALLET
+// =======================
 async function connectWallet() {
   try {
     provider = window.solana;
 
     if (!provider || !provider.isPhantom) {
-      alert("Open in Phantom browser");
+      alert("Open inside Phantom browser");
       return;
     }
 
@@ -32,13 +22,15 @@ async function connectWallet() {
     const addr = document.getElementById("address");
     addr.innerText = short;
 
+    // copy address
     addr.onclick = () => {
       navigator.clipboard.writeText(full);
-      alert("Copied!");
+      alert("Address copied!");
     };
 
     console.log("CONNECTED:", full);
 
+    // 🔥 ambil balance
     getBalance();
 
   } catch (err) {
@@ -46,35 +38,27 @@ async function connectWallet() {
   }
 }
 
-// 🔥 BALANCE (MULTI TRY)
+// =======================
+// GET BALANCE (SOLSCAN)
+// =======================
 async function getBalance() {
   try {
     if (!wallet) return;
 
-    let lamports = 0;
-    let success = false;
+    const address = wallet.toString();
 
-    for (let i = 0; i < RPCS.length; i++) {
-      try {
-        const connection = getConnection();
-        lamports = await connection.getBalance(wallet);
+    const res = await fetch(
+      "https://public-api.solscan.io/account/" + address
+    );
 
-        if (lamports !== null) {
-          success = true;
-          break;
-        }
-      } catch (e) {
-        console.log("RPC FAIL, TRY NEXT...");
-      }
-    }
+    const data = await res.json();
 
-    if (!success) {
-      console.log("ALL RPC FAILED");
+    if (!data || !data.lamports) {
       document.getElementById("sol").innerText = "0.0000 SOL";
       return;
     }
 
-    const sol = lamports / 1e9;
+    const sol = data.lamports / 1e9;
 
     console.log("BALANCE:", sol);
 
@@ -87,25 +71,29 @@ async function getBalance() {
   }
 }
 
-// AUTO REFRESH
+// 🔄 AUTO REFRESH BALANCE
 setInterval(() => {
   if (wallet) getBalance();
-}, 4000);
+}, 5000);
 
-// UI
+// =======================
+// UI CONTROL
+// =======================
 function openSend() {
   document.getElementById("sendBox").classList.toggle("hidden");
 }
 
-// RECEIVE
+// RECEIVE (COPY ADDRESS)
 function receive() {
   if (!wallet) return alert("Connect first");
 
   navigator.clipboard.writeText(wallet.toString());
-  alert("Address copied");
+  alert("Address copied!");
 }
 
-// VALIDASI
+// =======================
+// VALIDATE ADDRESS
+// =======================
 function isValidAddress(addr) {
   try {
     new solanaWeb3.PublicKey(addr);
@@ -115,7 +103,9 @@ function isValidAddress(addr) {
   }
 }
 
-// SEND (pakai RPC pertama)
+// =======================
+// SEND SOL
+// =======================
 async function send() {
   try {
     if (!wallet) return alert("Connect first");
@@ -128,34 +118,11 @@ async function send() {
 
     const lamports = Math.floor(amount * 1e9);
 
-    const connection = new solanaWeb3.Connection(RPCS[0], "confirmed");
+    const connection = new solanaWeb3.Connection(
+      "https://api.mainnet-beta.solana.com",
+      "confirmed"
+    );
 
     const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
-        fromPubkey: wallet,
-        toPubkey: new solanaWeb3.PublicKey(to),
-        lamports
-      })
-    );
-
-    tx.feePayer = wallet;
-
-    const { blockhash } = await connection.getLatestBlockhash();
-    tx.recentBlockhash = blockhash;
-
-    const signed = await provider.signAndSendTransaction(tx);
-
-    document.getElementById("status").innerText = "Processing...";
-
-    await connection.confirmTransaction(signed.signature);
-
-    document.getElementById("status").innerText =
-      "Success: " + signed.signature;
-
-    getBalance();
-
-  } catch (err) {
-    console.log(err);
-    document.getElementById("status").innerText = "Failed";
-  }
-}
+        fromPubkey: wallet
