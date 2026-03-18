@@ -14,42 +14,23 @@ body {
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.logo-img {
-  width: 40px;
-  height: 40px;
-  image-rendering: pixelated;
-}
-
-.title {
-  font-size: 14px;
-  letter-spacing: 2px;
-  color: #ff3b3b;
-}
-
-.connect {
+button {
   background: #1f1f2e;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 20px;
   color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .balance {
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
 .balance h1 {
-  font-size: 42px;
+  font-size: 40px;
 }
 
 .actions {
@@ -60,36 +41,21 @@ body {
 
 .actions button {
   flex: 1;
-  padding: 12px;
-  border-radius: 15px;
-  background: #1a1a2e;
-  color: white;
-  border: none;
 }
 
 .card {
+  margin-top: 20px;
   background: #1a1a2e;
   padding: 20px;
-  border-radius: 20px;
-  margin-top: 20px;
+  border-radius: 15px;
 }
 
 input {
   width: 100%;
-  padding: 14px;
+  padding: 12px;
   margin-top: 10px;
-  border-radius: 12px;
+  border-radius: 10px;
   border: none;
   background: #2a2a40;
   color: white;
-}
-
-button {
-  width: 100%;
-  padding: 14px;
-  margin-top: 15px;
-  border-radius: 15px;
-  background: linear-gradient(45deg, #9945FF, #14F195);
-  color: black;
-  font-weight: bold;
 }
