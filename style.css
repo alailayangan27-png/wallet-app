@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: Arial;
+  background: linear-gradient(180deg, #0f2027, #203a43);
+  color: white;
+}
+
+/* APP */
+.app {
+  max-width: 400px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+  background: purple;
+  border-radius: 50%;
+}
+
+.scan {
+  width: 30px;
+  height: 30px;
+  border: 2px solid white;
+  border-radius: 8px;
+}
+
+/* BALANCE */
+.balance {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.balance h1 {
+  font-size: 48px;
+  margin: 0;
+}
+
+.profit {
+  color: #00ff88;
+}
+
+/* BUTTON */
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.actions button {
+  flex: 1;
+  margin: 5px;
+  padding: 14px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+  color: white;
+  font-weight: bold;
+}
+
+/* TOKENS */
+.token {
+  background: #1a1a2e;
+  padding: 15px;
+  border-radius: 15px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.left {
+  display: flex;
+  gap: 10px;
+}
+
+.logo {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+
+.sol { background: linear-gradient(45deg, #00ffa3, #dc1fff); }
+.eth { background: gray; }
+.matic { background: purple; }
+
+.green { color: #00ff88; }
+
+/* NAVBAR */
+.navbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
