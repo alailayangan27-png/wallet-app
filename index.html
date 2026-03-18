@@ -21,21 +21,21 @@
     <button onclick="connectWallet()" class="btn">Connect</button>
   </div>
 
-  <!-- WALLET CARD -->
+  <!-- WALLET -->
   <div class="card">
     <div class="label">Wallet</div>
     <div id="address">Not connected</div>
     <div id="sol">Loading...</div>
   </div>
 
-  <!-- ACTIONS -->
+  <!-- ACTION -->
   <div class="actions">
-    <button onclick="sendSOL()">Send</button>
+    <button onclick="openSend()">Send</button>
     <button onclick="receive()">Receive</button>
   </div>
 
-  <!-- SEND FORM -->
-  <div class="card">
+  <!-- SEND -->
+  <div id="sendBox" class="card hidden">
     <input id="to" placeholder="Recipient Address"/>
     <input id="amount" placeholder="Amount (SOL)"/>
     <button onclick="sendSOL()">Confirm Send</button>
@@ -43,18 +43,22 @@
 
   <!-- TWITTER FEED -->
   <div class="card">
-  <div class="label">Lobstar Updates</div>
+    <div class="label">Lobstar Updates</div>
 
-  <a class="twitter-timeline"
-     data-theme="dark"
-     data-height="500"
-     data-chrome="nofooter noborders"
-     href="https://x.com/LobstarWilde">
-  </a>
+    <a class="twitter-timeline"
+       data-theme="dark"
+       data-height="500"
+       data-chrome="nofooter noborders"
+       href="https://twitter.com/USERNAME_KAMU">
+    </a>
+  </div>
+
 </div>
 
+<!-- Twitter -->
 <script async src="https://platform.twitter.com/widgets.js"></script>
-</div>
-  
+
+<script src="app.js"></script>
+
 </body>
-</html>
+  </html>
