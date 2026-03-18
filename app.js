@@ -2,15 +2,21 @@ let wallet = null;
 const connection = new solanaWeb3.Connection("https://api.mainnet-beta.solana.com");
 
 async function connectWallet() {
-  if (!window.solana) {
-    alert("Install Phantom Wallet");
-    return;
+  try {
+    if (!window.solana) {
+      alert("Install Phantom Wallet!");
+      return;
+    }
+
+    const res = await window.solana.connect();
+    wallet = res.publicKey;
+
+    alert("Connected: " + wallet.toString());
+
+    getBalance();
+  } catch (err) {
+    console.log(err);
   }
-
-  const res = await window.solana.connect();
-  wallet = res.publicKey;
-
-  getBalance();
 }
 
 async function getBalance() {
@@ -28,8 +34,38 @@ async function getBalance() {
   document.getElementById("solUsd").innerText = "$" + usd.toFixed(2);
 }
 
-function openSend() {
-  alert("Send feature coming next 🔥");
+async function openSend() {
+  if (!wallet) {
+    alert("Connect wallet first!");
+    return;
+  }
+
+  const to = prompt("Receiver address:");
+  const amount = prompt("Amount (SOL):");
+
+  if (!to || !amount) return;
+
+  try {
+    const transaction = new solanaWeb3.Transaction().add(
+      solanaWeb3.SystemProgram.transfer({
+        fromPubkey: wallet,
+        toPubkey: new solanaWeb3.PublicKey(to),
+        lamports: parseFloat(amount) * 1e9,
+      })
+    );
+
+    transaction.feePayer = wallet;
+
+    const { blockhash } = await connection.getLatestBlockhash();
+    transaction.recentBlockhash = blockhash;
+
+    const signed = await window.solana.signAndSendTransaction(transaction);
+
+    alert("TX Success: " + signed.signature);
+  } catch (err) {
+    console.log(err);
+    alert("Transaction failed");
+  }
 }
 
 function buy() {
