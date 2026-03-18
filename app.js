@@ -1,11 +1,17 @@
 let provider;
 let wallet;
 
-// 🔥 RPC cepat & stabil
-const connection = new solanaWeb3.Connection(
+// 🔥 MULTI RPC (ANTI GAGAL)
+const RPCS = [
+  "https://api.mainnet-beta.solana.com",
   "https://rpc.ankr.com/solana",
-  "confirmed"
-);
+  "https://solana.public-rpc.com"
+];
+
+function getConnection() {
+  const url = RPCS[Math.floor(Math.random() * RPCS.length)];
+  return new solanaWeb3.Connection(url, "confirmed");
+}
 
 // CONNECT
 async function connectWallet() {
@@ -23,17 +29,16 @@ async function connectWallet() {
     const full = wallet.toString();
     const short = full.slice(0, 4) + "..." + full.slice(-4);
 
-    const addrEl = document.getElementById("address");
-    addrEl.innerText = short;
+    const addr = document.getElementById("address");
+    addr.innerText = short;
 
-    addrEl.onclick = () => {
+    addr.onclick = () => {
       navigator.clipboard.writeText(full);
-      alert("Address copied");
+      alert("Copied!");
     };
 
     console.log("CONNECTED:", full);
 
-    // 🔥 ambil balance langsung
     getBalance();
 
   } catch (err) {
@@ -41,14 +46,35 @@ async function connectWallet() {
   }
 }
 
-// 🔥 BALANCE (FIXED)
+// 🔥 BALANCE (MULTI TRY)
 async function getBalance() {
   try {
     if (!wallet) return;
 
-    const balance = await connection.getBalance(wallet);
+    let lamports = 0;
+    let success = false;
 
-    const sol = balance / 1e9;
+    for (let i = 0; i < RPCS.length; i++) {
+      try {
+        const connection = getConnection();
+        lamports = await connection.getBalance(wallet);
+
+        if (lamports !== null) {
+          success = true;
+          break;
+        }
+      } catch (e) {
+        console.log("RPC FAIL, TRY NEXT...");
+      }
+    }
+
+    if (!success) {
+      console.log("ALL RPC FAILED");
+      document.getElementById("sol").innerText = "0.0000 SOL";
+      return;
+    }
+
+    const sol = lamports / 1e9;
 
     console.log("BALANCE:", sol);
 
@@ -57,8 +83,6 @@ async function getBalance() {
 
   } catch (err) {
     console.log("BALANCE ERROR:", err);
-
-    // fallback
     document.getElementById("sol").innerText = "0.0000 SOL";
   }
 }
@@ -66,7 +90,7 @@ async function getBalance() {
 // AUTO REFRESH
 setInterval(() => {
   if (wallet) getBalance();
-}, 3000);
+}, 4000);
 
 // UI
 function openSend() {
@@ -91,7 +115,7 @@ function isValidAddress(addr) {
   }
 }
 
-// SEND
+// SEND (pakai RPC pertama)
 async function send() {
   try {
     if (!wallet) return alert("Connect first");
@@ -103,6 +127,8 @@ async function send() {
     if (!amount || amount <= 0) return alert("Invalid amount");
 
     const lamports = Math.floor(amount * 1e9);
+
+    const connection = new solanaWeb3.Connection(RPCS[0], "confirmed");
 
     const tx = new solanaWeb3.Transaction().add(
       solanaWeb3.SystemProgram.transfer({
