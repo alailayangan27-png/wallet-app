@@ -1,9 +1,9 @@
 let provider;
 let wallet;
 
-// 🔥 RPC RESMI (LEBIH STABIL)
+// 🔥 RPC cepat & stabil
 const connection = new solanaWeb3.Connection(
-  "https://api.mainnet-beta.solana.com",
+  "https://rpc.ankr.com/solana",
   "confirmed"
 );
 
@@ -13,7 +13,7 @@ async function connectWallet() {
     provider = window.solana;
 
     if (!provider || !provider.isPhantom) {
-      alert("Open inside Phantom browser");
+      alert("Open in Phantom browser");
       return;
     }
 
@@ -23,42 +23,34 @@ async function connectWallet() {
     const full = wallet.toString();
     const short = full.slice(0, 4) + "..." + full.slice(-4);
 
-    const addr = document.getElementById("address");
-    addr.innerText = short;
+    const addrEl = document.getElementById("address");
+    addrEl.innerText = short;
 
-    addr.onclick = () => {
+    addrEl.onclick = () => {
       navigator.clipboard.writeText(full);
-      alert("Copied!");
+      alert("Address copied");
     };
 
     console.log("CONNECTED:", full);
 
-    // 🔥 langsung ambil balance
-    await getBalance();
+    // 🔥 ambil balance langsung
+    getBalance();
 
   } catch (err) {
     console.log("CONNECT ERROR:", err);
   }
 }
 
-// 🔥 BALANCE (PALING AKURAT)
+// 🔥 BALANCE (FIXED)
 async function getBalance() {
   try {
     if (!wallet) return;
 
-    const info = await connection.getAccountInfo(wallet);
+    const balance = await connection.getBalance(wallet);
 
-    if (!info) {
-      console.log("Account kosong / belum ada");
-      document.getElementById("sol").innerText = "0.0000 SOL";
-      return;
-    }
+    const sol = balance / 1e9;
 
-    const lamports = info.lamports;
-    const sol = lamports / 1e9;
-
-    console.log("LAMPORTS:", lamports);
-    console.log("SOL:", sol);
+    console.log("BALANCE:", sol);
 
     document.getElementById("sol").innerText =
       sol.toFixed(4) + " SOL";
@@ -66,18 +58,19 @@ async function getBalance() {
   } catch (err) {
     console.log("BALANCE ERROR:", err);
 
+    // fallback
     document.getElementById("sol").innerText = "0.0000 SOL";
   }
 }
 
-// 🔥 AUTO UPDATE (REALTIME RASA PHANTOM)
+// AUTO REFRESH
 setInterval(() => {
   if (wallet) getBalance();
-}, 2500);
+}, 3000);
 
-// SEND UI
+// UI
 function openSend() {
-  document.getElementById("sendBox").style.display = "block";
+  document.getElementById("sendBox").classList.toggle("hidden");
 }
 
 // RECEIVE
@@ -85,10 +78,10 @@ function receive() {
   if (!wallet) return alert("Connect first");
 
   navigator.clipboard.writeText(wallet.toString());
-  alert("Address copied!");
+  alert("Address copied");
 }
 
-// VALIDASI ADDRESS
+// VALIDASI
 function isValidAddress(addr) {
   try {
     new solanaWeb3.PublicKey(addr);
@@ -98,7 +91,7 @@ function isValidAddress(addr) {
   }
 }
 
-// SEND SOL
+// SEND
 async function send() {
   try {
     if (!wallet) return alert("Connect first");
@@ -136,7 +129,7 @@ async function send() {
     getBalance();
 
   } catch (err) {
-    console.log("SEND ERROR:", err);
+    console.log(err);
     document.getElementById("status").innerText = "Failed";
   }
-      }
+}
