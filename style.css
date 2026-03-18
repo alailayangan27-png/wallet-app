@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  font-family: sans-serif;
-  background: #0c0c0f;
+  background: #0d0d12;
   color: white;
+  font-family: -apple-system, sans-serif;
 }
 
 .app {
@@ -11,104 +11,72 @@ body {
   padding: 20px;
 }
 
+/* HEADER */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
+.logo {
+  font-size: 24px;
+  color: #9945FF;
 }
 
-.connect-btn {
-  background: #1f1f25;
+.connect {
+  background: #1f1f2e;
   border: none;
   padding: 8px 14px;
-  border-radius: 12px;
+  border-radius: 20px;
   color: white;
 }
 
+/* BALANCE */
 .balance {
+  margin-top: 30px;
   text-align: center;
-  margin: 30px 0;
 }
 
 .balance h1 {
   font-size: 40px;
 }
 
-.actions {
-  display: flex;
+.balance p {
+  opacity: 0.6;
+  font-size: 14px;
 }
 
-.actions button {
-  flex: 1;
-  margin: 5px;
+/* SWAP */
+.swap-box {
+  background: #1a1a2e;
+  padding: 20px;
+  border-radius: 20px;
+  margin-top: 30px;
+}
+
+input, select {
+  width: 100%;
   padding: 14px;
-  border-radius: 20px;
-  border: none;
-  background: #1f1f25;
-  color: white;
-}
-
-.card {
-  background: #16161c;
-  border-radius: 20px;
-  padding: 15px;
-  margin-top: 15px;
-}
-
-.input-box {
-  display: flex;
-  justify-content: space-between;
-  background: #1f1f25;
-  padding: 12px;
+  margin-top: 10px;
   border-radius: 12px;
-  margin-top: 10px;
-}
-
-.input-box input, select {
-  background: none;
   border: none;
+  background: #2a2a40;
   color: white;
-  width: 100%;
 }
 
-.primary {
+button {
   width: 100%;
-  margin-top: 10px;
   padding: 14px;
-  border-radius: 20px;
+  margin-top: 15px;
+  border-radius: 15px;
   border: none;
-  background: linear-gradient(45deg, #6c5ce7, #8e44ad);
-  color: white;
+  background: linear-gradient(45deg, #9945FF, #14F195);
+  color: black;
+  font-weight: bold;
 }
 
-.token {
-  display: flex;
-  justify-content: space-between;
-}
-
-.left {
-  display: flex;
-  gap: 10px;
-}
-
-.logo {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-}
-
-.sol {
-  background: linear-gradient(45deg, #00ffa3, #dc1fff);
-}
-
-.arrow {
+#status {
   text-align: center;
-  margin: 10px;
+  margin-top: 15px;
+  opacity: 0.7;
 }
