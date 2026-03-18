@@ -9,14 +9,15 @@
 
 <div class="app">
 
-  <div class="header">
-    <div class="title">LOBSTAR WALLET</div>
-    <button onclick="connectWallet()">Connect</button>
+  <div class="topbar">
+    <div class="logo">LOBSTAR</div>
+    <button class="connect-btn" onclick="connectWallet()">Connect</button>
   </div>
 
-  <div class="balance">
-    <h1 id="sol">0.0000 SOL</h1>
-    <p id="address">Not connected</p>
+  <div class="card balance-card">
+    <div class="label">Balance</div>
+    <div id="sol" class="balance">0.0000 SOL</div>
+    <div id="address" class="address">Not connected</div>
   </div>
 
   <div class="actions">
@@ -24,13 +25,13 @@
     <button onclick="receive()">Receive</button>
   </div>
 
-  <div id="sendBox" class="card" style="display:none;">
+  <div id="sendBox" class="card hidden">
     <input id="to" placeholder="Recipient address">
-    <input id="amount" placeholder="Amount SOL">
-    <button onclick="send()">Confirm Send</button>
+    <input id="amount" placeholder="Amount (SOL)">
+    <button onclick="send()">Send Now</button>
   </div>
 
-  <p id="status"></p>
+  <div id="status"></div>
 
 </div>
 
